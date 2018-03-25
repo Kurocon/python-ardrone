@@ -16,6 +16,8 @@ path = 'tcp://192.168.1.1:5555'
 drone = libardrone.ARDrone()
 drone.speed = 0.5
 pygame.init()
+regular_font = pygame.font.Font('fonts/DroidSansMono.ttf', 20)
+alert_font = pygame.font.Font('fonts/DroidSansMono.ttf', 40)
 W, H = 640, 360
 hud_color = (255, 0, 0)
 screen = pygame.display.set_mode((W, H))
