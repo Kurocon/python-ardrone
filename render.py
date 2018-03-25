@@ -26,6 +26,8 @@ colour_crosshair = (0, 0, 0)
 colour_bar = (0, 255, 0)
 colour_bar_background = (0, 0, 0)
 colour_text_outline = (0, 0, 0)
+colour_black_replace = (0, 255, 0)
+colour_white_replace = (0, 0, 0)
 
 
 def render(screen, original_image, new_image, is_new_image, offset, keypoint, strafe, thrust, lift, yaw, is_landing,
@@ -52,7 +54,14 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
     """
     # Draw image
     surface = pygame.image.frombuffer(new_image if is_new_image else original_image, (W, H), 'RGB')
-    screen.blit(surface, (0, 0))
+    if is_new_image:
+        pixel_array = pygame.PixelArray(surface)
+        pixel_array.replace((0, 0, 0), colour_black_replace, 0.1)
+        pixel_array.replace((255, 255, 255), colour_white_replace, 0.4)
+        del pixel_array
+        screen.blit(surface, (0, 0))
+    else:
+        screen.blit(surface, (0, 0))
 
     # Draw reticle
     if not is_new_image and offset is not None:
