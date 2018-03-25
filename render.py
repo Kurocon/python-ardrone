@@ -322,7 +322,12 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
 
     text = regular_font.render("Press 'Return' to start", True, (255, 255, 255))
     rectangle = text.get_rect()
-    rectangle.midbottom = (CW + O, H + O + OA - text_padding - rectangle.height)
+    rectangle.bottomleft = (text_padding, H + O + OA - text_padding - rectangle.height)
+    screen.blit(text, rectangle)
+
+    text = regular_font.render("Press 'Escape' to kill drone", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.bottomright = (W + 2 * O - text_padding, H + O + OA - text_padding - rectangle.height)
     screen.blit(text, rectangle)
 
     text = regular_font.render("Press 'Space' for emergency stop", True, (255, 255, 255))
