@@ -10,7 +10,7 @@ pygame.init()
 regular_font = pygame.font.Font('fonts/DroidSansMono.ttf', 20)
 alert_font = pygame.font.Font('fonts/DroidSansMono.ttf', 40)
 W, H = 640, 360
-screen = pygame.display.set_mode((W, H))
+screen = pygame.display.set_mode((W + 120, H + 180))
 clock = pygame.time.Clock()
 
 need_to_land = False
@@ -53,10 +53,8 @@ while cap.isOpened():
             if a is None:
                 need_to_land = True
 
-            if keypoint is None:
-                rgb_im = cv2.cvtColor(im, cv2.COLOR_GRAY2RGB)
-            else:
-                rgb_im = draw_keypoint(keypoint, im)
+            rgb_im = cv2.cvtColor(im, cv2.COLOR_GRAY2RGB)
+
         else:
             print("Ignoring keypoint due to false positive")
 
