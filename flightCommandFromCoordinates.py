@@ -15,6 +15,7 @@ keypoint_maxsize = 115
 
 image_landing_cutoff = 300
 
+
 def get_flight_command(keypoint, offset):
     global notFoundCounter, huegCounter, startCounter, has100, prevFlightSpeed
     flight_speed = -0.2
@@ -48,4 +49,4 @@ def get_flight_command(keypoint, offset):
     notFoundCounter = 0
     prevFlightSpeed = prevFlightSpeed * 0.85 + 0.15 * flight_speed
 
-    return 0.5 * offset[0], prevFlightSpeed, 0.00 - offset[1], 1 * offset[0]
+    return 0.5 * offset[0], (1 - abs(offset[0]) * 2) * prevFlightSpeed, 0.00 - offset[1], 1 * offset[0]

@@ -7,6 +7,8 @@ from render import render
 
 cap = cv2.VideoCapture('output.avi')
 pygame.init()
+regular_font = pygame.font.Font('fonts/DroidSansMono.ttf', 20)
+alert_font = pygame.font.Font('fonts/DroidSansMono.ttf', 40)
 W, H = 640, 360
 screen = pygame.display.set_mode((W, H))
 clock = pygame.time.Clock()
@@ -59,7 +61,8 @@ while cap.isOpened():
             print("Ignoring keypoint due to false positive")
 
         pygame.display.flip()
-        render(screen, imagergb, rgb_im, image_mode, offset, keypoint, a, b, c, d, False, False, "AUTOMATIC", False)
+        render(screen, imagergb, rgb_im, image_mode, offset, keypoint, a, b, c, d, a is None, False, "AUTOMATIC", False,
+           regular_font, alert_font)
         clock.tick(20)
         pygame.display.set_caption("FPS: %.2f" % clock.get_fps())
 

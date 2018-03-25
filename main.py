@@ -17,6 +17,8 @@ path = 'tcp://192.168.1.1:5555'
 drone = libardrone.ARDrone()
 drone.speed = 0.5
 pygame.init()
+regular_font = pygame.font.Font('fonts/DroidSansMono.ttf', 20)
+alert_font = pygame.font.Font('fonts/DroidSansMono.ttf', 40)
 W, H = 640, 360
 hud_color = (255, 0, 0)
 screen = pygame.display.set_mode((W, H))
@@ -34,7 +36,7 @@ processor.start()
 if capture:
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter("output.avi", fourcc, 20.0, (W, H))
-
+emergency = False
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,6 +52,7 @@ while running:
             elif event.key == pygame.K_SPACE:
                 drone.land()
                 flying = False
+                emergency = True
             # emergency
             elif event.key == pygame.K_BACKSPACE:
                 drone.reset()
@@ -80,7 +83,7 @@ while running:
             elif need_to_land:
                 print("Landing in {}".format(land_counter - landing_delay))
                 land_counter += 1
-            a,b,c,d = 0,0,0,0
+            a, b, c, d = 0, 0, 0, 0
             # Process image
             if flying and not need_to_land:
                 if not ignore:
@@ -100,7 +103,8 @@ while running:
                 rgb_im = draw_keypoint(keypoint, im)
             pygame.display.flip()
             bat = drone.navdata.get('battery', 0)
-            render(screen, imagergb, rgb_im, image_mode, offset, keypoint, a, b, c, d, drone.get_is_landing(), drone.get_is_takeoff(), "AUTOMATIC", False)
+            render(screen, imagergb, rgb_im, image_mode, offset, keypoint, a, b, c, d, drone.get_is_landing(),
+                   drone.get_is_takeoff(), "AUTOMATIC", emergency, regular_font, alert_font)
 
             clock.tick(50)
             pygame.display.set_caption("FPS: %.2f" % clock.get_fps())
