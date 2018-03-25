@@ -91,7 +91,7 @@ while running:
             # Process image
             if flying and not need_to_land:
                 if not ignore:
-                    a, b, c, d = get_flight_command(keypoint, offset)
+                    a, b, c, d = get_flight_command(keypoint, offset, None)
                     if a is None:
                         need_to_land = True
 
