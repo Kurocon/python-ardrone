@@ -4,8 +4,8 @@ import cv2
 import pygame
 import libardrone
 import time
-from flightCommandFromCoordinates import get_flight_command
-from recognition import preprocess_image, process_image, draw_keypoint, ProcessingThread
+from flightCommandFromCoordinates import get_flight_command, flight_reset
+from recognition import preprocess_image, process_image, draw_keypoint, ProcessingThread, processing_reset
 
 from render import render
 
@@ -28,7 +28,7 @@ image_mode = False
 need_to_land = False
 land_counter = 0
 
-landing_delay = 25
+landing_delay = 20
 
 processor = ProcessingThread()
 processor.start()
@@ -49,6 +49,10 @@ while running:
             elif event.key == pygame.K_RETURN:
                 drone.takeoff()
                 flying = True
+                need_to_land = False
+                land_counter = 0
+                flight_reset()
+                processing_reset()
             elif event.key == pygame.K_SPACE:
                 drone.land()
                 flying = False
@@ -92,7 +96,6 @@ while running:
                         need_to_land = True
 
                     else:
-                        print(a,b,c,d)
                         drone.at(libardrone.at_pcmd, True, a, b, c, d)
                 else:
                     print("Ignoring keypoint due to false positive")
@@ -110,7 +113,6 @@ while running:
             pygame.display.set_caption("FPS: %.2f" % clock.get_fps())
             f = pygame.font.Font(None, 20)
             hud = f.render('Battery: %i%%' % bat, True, hud_color)
-            print bat
             screen.blit(hud, (10, 10))
     except Exception as e:
         import traceback

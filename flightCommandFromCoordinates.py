@@ -30,7 +30,6 @@ def get_flight_command(keypoint, offset):
             return None, None, None, None
 
     else:
-        print(keypoint.size)
         flight_speed = max(-0.2, (0.5 + (0.5 - offset[1])) / 2 * -0.4)
         if keypoint.size > keypoint_minsize:
 
@@ -49,4 +48,4 @@ def get_flight_command(keypoint, offset):
     notFoundCounter = 0
     prevFlightSpeed = prevFlightSpeed * 0.85 + 0.15 * flight_speed
 
-    return 0.7 * offset[0], (3+(1 - abs(offset[0]) * 2))/4 * prevFlightSpeed, 0.00 - offset[1], 1 * offset[0]
+    return 0.5 * offset[0], (3+(1 - abs(offset[0]) * 2))/4 * prevFlightSpeed, 0.00 - (0.7 * offset[1]), 0.8 * offset[0]

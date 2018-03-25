@@ -16,6 +16,11 @@ false_positive_offset = 100
 false_positives = []
 
 
+def processing_reset():
+    previous_measurement = None
+    false_positives = []
+
+
 def showme(pic):
     cv2.imshow('window', pic)
     cv2.waitKey()
