@@ -101,7 +101,7 @@ while running:
             pygame.display.flip()
             bat = drone.navdata.get('battery', 0)
             render(screen, imagergb, rgb_im, image_mode, offset, keypoint, a, b, c, d, drone.get_is_landing(),
-                   drone.get_is_takeoff(), "AUTOMATIC", emergency)
+                   drone.get_is_takeoff(), "AUTOMATIC", emergency, regular_font, alert_font)
 
             clock.tick(50)
             pygame.display.set_caption("FPS: %.2f" % clock.get_fps())
