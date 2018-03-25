@@ -3,6 +3,7 @@ import pygame
 # Dimensions
 W, H = 640, 360
 CW, CH = W // 2, H // 2
+O, OA = 60, 120
 
 # Component sizes
 reticle_radius_factor = 0.5
@@ -18,9 +19,8 @@ text_padding = 10
 
 # Colours
 colour_stop = (255, 0, 0)
-colour_mode = (0, 0, 255)
-colour_control = (0, 255, 255)
-colour_target = (255, 0, 255)
+colour_mode = (142, 199, 255)
+colour_control = (142, 199, 255)
 colour_reticle = (255, 0, 0)
 colour_crosshair = (0, 0, 0)
 colour_bar = (0, 255, 0)
@@ -52,10 +52,10 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
     """
     # Draw image
     surface = pygame.image.frombuffer(new_image if is_new_image else original_image, (W, H), 'RGB')
-    screen.blit(surface, (0, 0))
+    screen.blit(surface, (O, O))
 
     # Draw reticle
-    if not is_new_image and offset is not None:
+    if offset is not None:
         surface = pygame.Surface((W, H))
         reticle = (CW + offset[0] * W, CH + offset[1] * H)
         radius = reticle_radius_factor * keypoint.size
@@ -66,7 +66,7 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
             (reticle[0], reticle[1] - radius),
         ], 3)
         surface.set_colorkey((0, 0, 0))
-        screen.blit(surface, (0, 0))
+        screen.blit(surface, (O, O))
 
     # Draw crosshair
     surface = pygame.Surface((W, H))
@@ -84,7 +84,7 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
                      (CW + crosshair_small_size, CH + crosshair_size), 1)
 
     surface.set_colorkey((255, 255, 255))
-    screen.blit(surface, (0, 0))
+    screen.blit(surface, (O, O))
 
     # Draw strafe
     strafe = strafe if strafe is not None else 0
@@ -99,7 +99,7 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
         surface = pygame.transform.flip(surface, True, False)
 
     surface.set_colorkey((255, 255, 255))
-    screen.blit(surface, (0, 0))
+    screen.blit(surface, (O, O))
 
     # Draw thrust
     thrust = thrust if thrust is not None else 0
@@ -114,7 +114,7 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
         surface = pygame.transform.flip(surface, False, True)
 
     surface.set_colorkey((255, 255, 255))
-    screen.blit(surface, (0, 0))
+    screen.blit(surface, (O, O))
 
     # Draw lift
     lift = lift if lift is not None else 0
@@ -129,7 +129,7 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
         surface = pygame.transform.flip(surface, False, True)
 
     surface.set_colorkey((255, 255, 255))
-    screen.blit(surface, (0, 0))
+    screen.blit(surface, (O, O))
 
     # Draw yaw
     yaw = yaw if yaw is not None else 0
@@ -144,60 +144,59 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
         surface = pygame.transform.flip(surface, True, False)
 
     surface.set_colorkey((255, 255, 255))
-    screen.blit(surface, (0, 0))
+    screen.blit(surface, (O, O))
 
     # Draw mode
     if is_takeoff:
         text = regular_font.render("Takeoff", True, colour_text_outline)
         rectangle = text.get_rect()
 
-        rectangle.topright = (W - bar_width - text_padding + 1, text_padding)
+        rectangle.topright = (W - bar_width - text_padding + 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding + 1, text_padding + 1)
+        rectangle.topright = (W - bar_width - text_padding + 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding, text_padding + 1)
+        rectangle.topright = (W - bar_width - text_padding + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding - 1, text_padding + 1)
+        rectangle.topright = (W - bar_width - text_padding - 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding - 1, text_padding)
+        rectangle.topright = (W - bar_width - text_padding - 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding - 1, text_padding - 1)
+        rectangle.topright = (W - bar_width - text_padding - 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding, text_padding - 1)
+        rectangle.topright = (W - bar_width - text_padding + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding + 1, text_padding - 1)
+        rectangle.topright = (W - bar_width - text_padding + 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
 
         text = regular_font.render("Takeoff", True, colour_mode)
         rectangle = text.get_rect()
-        rectangle.topright = (W - bar_width - text_padding, text_padding)
+        rectangle.topright = (W - bar_width - text_padding + O, text_padding + O)
         screen.blit(text, rectangle)
 
-        screen.blit(text, rectangle)
     elif is_landing:
         text = regular_font.render("Landing", True, colour_text_outline)
         rectangle = text.get_rect()
 
-        rectangle.topright = (W - bar_width - text_padding + 1, text_padding)
+        rectangle.topright = (W - bar_width - text_padding + 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding + 1, text_padding + 1)
+        rectangle.topright = (W - bar_width - text_padding + 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding, text_padding + 1)
+        rectangle.topright = (W - bar_width - text_padding + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding - 1, text_padding + 1)
+        rectangle.topright = (W - bar_width - text_padding - 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding - 1, text_padding)
+        rectangle.topright = (W - bar_width - text_padding - 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding - 1, text_padding - 1)
+        rectangle.topright = (W - bar_width - text_padding - 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding, text_padding - 1)
+        rectangle.topright = (W - bar_width - text_padding + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topright = (W - bar_width - text_padding + 1, text_padding - 1)
+        rectangle.topright = (W - bar_width - text_padding + 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
 
         text = regular_font.render("Landing", True, colour_mode)
         rectangle = text.get_rect()
-        rectangle.topright = (W - bar_width - text_padding, text_padding)
+        rectangle.topright = (W - bar_width - text_padding + O, text_padding + O)
         screen.blit(text, rectangle)
 
     # Draw control
@@ -205,53 +204,52 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
         text = regular_font.render("Auto", True, colour_text_outline)
         rectangle = text.get_rect()
 
-        rectangle.topleft = (bar_width + text_padding + 1, text_padding)
+        rectangle.topleft = (bar_width + text_padding + 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding + 1, text_padding + 1)
+        rectangle.topleft = (bar_width + text_padding + 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding, text_padding + 1)
+        rectangle.topleft = (bar_width + text_padding + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding - 1, text_padding + 1)
+        rectangle.topleft = (bar_width + text_padding - 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding - 1, text_padding)
+        rectangle.topleft = (bar_width + text_padding - 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding - 1, text_padding - 1)
+        rectangle.topleft = (bar_width + text_padding - 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding, text_padding - 1)
+        rectangle.topleft = (bar_width + text_padding + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding + 1, text_padding - 1)
+        rectangle.topleft = (bar_width + text_padding + 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
 
         text = regular_font.render("Auto", True, colour_control)
         rectangle = text.get_rect()
-        rectangle.topleft = (bar_width + text_padding, text_padding)
+        rectangle.topleft = (bar_width + text_padding + O, text_padding + O)
         screen.blit(text, rectangle)
 
-        screen.blit(text, rectangle)
     else:
         text = regular_font.render("Manual", True, colour_text_outline)
         rectangle = text.get_rect()
 
-        rectangle.topleft = (bar_width + text_padding + 1, text_padding)
+        rectangle.topleft = (bar_width + text_padding + 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding + 1, text_padding + 1)
+        rectangle.topleft = (bar_width + text_padding + 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding, text_padding + 1)
+        rectangle.topleft = (bar_width + text_padding + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding - 1, text_padding + 1)
+        rectangle.topleft = (bar_width + text_padding - 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding - 1, text_padding)
+        rectangle.topleft = (bar_width + text_padding - 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding - 1, text_padding - 1)
+        rectangle.topleft = (bar_width + text_padding - 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding, text_padding - 1)
+        rectangle.topleft = (bar_width + text_padding + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.topleft = (bar_width + text_padding + 1, text_padding - 1)
+        rectangle.topleft = (bar_width + text_padding + 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
 
         text = regular_font.render("Manual", True, colour_control)
         rectangle = text.get_rect()
-        rectangle.topleft = (bar_width + text_padding, text_padding)
+        rectangle.topleft = (bar_width + text_padding + O, text_padding + O)
         screen.blit(text, rectangle)
 
     # Draw emergency
@@ -259,26 +257,75 @@ def render(screen, original_image, new_image, is_new_image, offset, keypoint, st
         text = alert_font.render("STOP", True, colour_text_outline)
         rectangle = text.get_rect()
 
-        rectangle.midtop = (CW + 1, text_padding)
+        rectangle.midtop = (CW + 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.midtop = (CW + 1, text_padding + 1)
+        rectangle.midtop = (CW + 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.midtop = (CW, text_padding + 1)
+        rectangle.midtop = (CW + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.midtop = (CW - 1, text_padding + 1)
+        rectangle.midtop = (CW - 1 + O, text_padding + 1 + O)
         screen.blit(text, rectangle)
-        rectangle.midtop = (CW - 1, text_padding)
+        rectangle.midtop = (CW - 1 + O, text_padding + O)
         screen.blit(text, rectangle)
-        rectangle.midtop = (CW - 1, text_padding - 1)
+        rectangle.midtop = (CW - 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.midtop = (CW, text_padding - 1)
+        rectangle.midtop = (CW + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
-        rectangle.midtop = (CW + 1, text_padding - 1)
+        rectangle.midtop = (CW + 1 + O, text_padding - 1 + O)
         screen.blit(text, rectangle)
 
         text = alert_font.render("STOP", True, colour_stop)
         rectangle = text.get_rect()
-        rectangle.midtop = (CW, text_padding)
+        rectangle.midtop = (CW + O, text_padding + O)
         screen.blit(text, rectangle)
 
-        screen.blit(text, rectangle)
+    # Draw title
+    text = alert_font.render("ARDrone 2.0", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.topleft = (text_padding, text_padding)
+    screen.blit(text, rectangle)
+
+    # Draw subtitle
+    text = alert_font.render("Target Practice", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.topright = (W + 2 * O - text_padding, text_padding)
+    screen.blit(text, rectangle)
+
+    # Draw descriptions
+    text = regular_font.render("Strafe", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.midtop = (CW + O, H + O + text_padding // 2)
+    screen.blit(text, rectangle)
+
+    text = regular_font.render("Yaw", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.midtop = (CW + O, H + O + text_padding // 2 + rectangle.height)
+    screen.blit(text, rectangle)
+
+    text = regular_font.render("Lift", True, (255, 255, 255))
+    text = pygame.transform.rotate(text, 90)
+    rectangle = text.get_rect()
+    rectangle.midright = (O - text_padding // 2, CH + O)
+    screen.blit(text, rectangle)
+
+    text = regular_font.render("Thrust", True, (255, 255, 255))
+    text = pygame.transform.rotate(text, -90)
+    rectangle = text.get_rect()
+    rectangle.midleft = (W + O + text_padding // 2, CH + O)
+    screen.blit(text, rectangle)
+
+    # Draw instructions
+    text = regular_font.render("Press 'I' to switch feed", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.bottomleft = (text_padding, H + O + OA - text_padding)
+    screen.blit(text, rectangle)
+
+    text = regular_font.render("Press 'Return' to start", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.midbottom = (CW + O, H + O + OA - text_padding - rectangle.height)
+    screen.blit(text, rectangle)
+
+    text = regular_font.render("Press 'Space' for emergency stop", True, (255, 255, 255))
+    rectangle = text.get_rect()
+    rectangle.bottomright = (W + 2 * O - text_padding, H + O + OA - text_padding)
+    screen.blit(text, rectangle)

@@ -100,10 +100,8 @@ while running:
                 else:
                     print("Ignoring keypoint due to false positive")
 
-            if keypoint is None:
-                rgb_im = cv2.cvtColor(im, cv2.COLOR_GRAY2RGB)
-            else:
-                rgb_im = draw_keypoint(keypoint, im)
+            rgb_im = cv2.cvtColor(im, cv2.COLOR_GRAY2RGB)
+
             pygame.display.flip()
             bat = drone.navdata.get('battery', 0)
             render(screen, imagergb, rgb_im, image_mode, offset, keypoint, a, b, c, d, drone.get_is_landing(),
