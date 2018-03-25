@@ -10,8 +10,8 @@ prevFlightSpeed = -0.2
 takeoff_limit = 40
 notfound_limit = 20
 
-keypoint_minsize = 95
-keypoint_maxsize = 115
+keypoint_minsize = 80
+keypoint_maxsize = 105
 
 image_landing_cutoff = 300
 
@@ -24,7 +24,7 @@ def get_flight_command(keypoint, offset):
             notFoundCounter += 1
             print(" NOT FOUND {}".format(notFoundCounter))
             prevFlightSpeed = prevFlightSpeed * 0.85 + 0.15 * flight_speed
-            return 0, prevFlightSpeed, 1, 0
+            return 0, prevFlightSpeed, 0.8, 0
         else:
             print("LANDING")
             return None, None, None, None
@@ -49,4 +49,4 @@ def get_flight_command(keypoint, offset):
     notFoundCounter = 0
     prevFlightSpeed = prevFlightSpeed * 0.85 + 0.15 * flight_speed
 
-    return 0.5 * offset[0], (1 - abs(offset[0]) * 2) * prevFlightSpeed, 0.00 - offset[1], 1 * offset[0]
+    return 0.7 * offset[0], (3+(1 - abs(offset[0]) * 2))/4 * prevFlightSpeed, 0.00 - offset[1], 1 * offset[0]

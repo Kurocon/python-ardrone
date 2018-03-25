@@ -12,7 +12,7 @@ from Queue import Queue
 
 
 previous_measurement = None
-false_positive_offset = 50
+false_positive_offset = 100
 false_positives = []
 
 

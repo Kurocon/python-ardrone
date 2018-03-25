@@ -28,7 +28,7 @@ image_mode = False
 need_to_land = False
 land_counter = 0
 
-landing_delay = 15
+landing_delay = 25
 
 processor = ProcessingThread()
 processor.start()
